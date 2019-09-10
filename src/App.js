@@ -1,26 +1,38 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {connect} from "react-redux";
+import {update} from "./dispatch/update"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+
+  onupdate=(e)=>{
+    console.log("invoke")
+    this.props.onupdate(e.target.value)
+  }
+
+  render(){
+    console.log(this.props.rstate)
+    console.log(this.props.astate)
+
+    return (
+      <div className="App">
+      <input onChange={this.onupdate}></input><br />
+      {this.props.rstate}<br />
+      {this.props.astate}
+      </div>
+    );
+  }
+
 }
 
-export default App;
+const mapStateToProps=state=>({
+    rstate:state.react,
+    astate:state.angular
+})
+
+const mapActionstoProps ={
+  onupdate:update
+}
+
+export default connect(mapStateToProps,mapActionstoProps)(App);
